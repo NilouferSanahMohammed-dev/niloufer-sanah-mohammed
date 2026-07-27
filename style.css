@@ -132,6 +132,12 @@ a { color: inherit; }
   line-height: 1.08;
   margin: 0 0 20px;
   color: var(--cream);
+  animation: name-glow 4.5s ease-in-out infinite;
+}
+
+@keyframes name-glow {
+  0%, 100% { text-shadow: 0 0 0px rgba(205,169,78,0); }
+  50% { text-shadow: 0 0 28px rgba(205,169,78,0.45); }
 }
 
 .hero-name em {
@@ -500,4 +506,5 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
   .marquee-track { animation: none; overflow-x: auto; }
+  .hero-name { animation: none; }
 }
