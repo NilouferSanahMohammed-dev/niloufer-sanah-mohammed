@@ -1,16 +1,22 @@
 /**
- * Renders the project grid from projects.js, handles the scroll-reveal
- * animation on section content, and drives the subtle gold cursor glow.
+ * Renders the project track from projects.js as a horizontal,
+ * scroll-snapping strip. Whichever card sits closest to the center of
+ * the viewport gets scaled up and brought into full focus, the rest
+ * fade back and shrink slightly, so scrolling through feels like
+ * flipping through cards rather than reading a static grid.
  */
 
 /* ---------------- Project cards ---------------- */
 
-const projectsGrid = document.getElementById("projectsGrid");
+const projectsTrack = document.getElementById("projectsGrid");
+const scrollLeftBtn = document.getElementById("scrollLeft");
+const scrollRightBtn = document.getElementById("scrollRight");
 
 PROJECTS.forEach((project) => {
   const card = document.createElement("article");
-  card.className = `project-card${project.featured ? " featured" : ""}`;
+  card.className = `project-card${project.featured ? " featured" : ""}${project.flagship ? " flagship" : ""}`;
   card.innerHTML = `
+    ${project.flagship ? `<span class="flagship-badge">the big one right now</span>` : ""}
     <h3 class="project-name">${project.name}</h3>
     <p class="project-tagline">${project.tagline}</p>
     <p class="project-desc">${project.description}</p>
@@ -19,10 +25,55 @@ PROJECTS.forEach((project) => {
     </div>
     <div class="project-links">
       <a href="${project.live}" target="_blank" rel="noopener">view live &rarr;</a>
-      <a href="${project.repo}" target="_blank" rel="noopener">source code</a>
     </div>
   `;
-  projectsGrid.appendChild(card);
+  projectsTrack.appendChild(card);
+});
+
+/* ---------------- Pop-to-center scroll effect ---------------- */
+
+const cards = Array.from(projectsTrack.children);
+
+function updateCardFocus() {
+  const trackRect = projectsTrack.getBoundingClientRect();
+  const centerX = trackRect.left + trackRect.width / 2;
+
+  cards.forEach((card) => {
+    const cardRect = card.getBoundingClientRect();
+    const cardCenter = cardRect.left + cardRect.width / 2;
+    const distance = Math.abs(centerX - cardCenter);
+    const maxDistance = trackRect.width / 2 + cardRect.width / 2;
+    const proximity = Math.max(0, 1 - distance / maxDistance);
+
+    const scale = 0.88 + proximity * 0.12;
+    const opacity = 0.5 + proximity * 0.5;
+    card.style.transform = `scale(${scale})`;
+    card.style.opacity = opacity;
+    card.style.zIndex = Math.round(proximity * 100);
+  });
+}
+
+let rafPending = false;
+function onScroll() {
+  if (rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(() => {
+    updateCardFocus();
+    rafPending = false;
+  });
+}
+
+projectsTrack.addEventListener("scroll", onScroll);
+window.addEventListener("resize", onScroll);
+
+// Give the layout a tick to settle before the first measurement.
+setTimeout(updateCardFocus, 200);
+
+scrollLeftBtn.addEventListener("click", () => {
+  projectsTrack.scrollBy({ left: -340, behavior: "smooth" });
+});
+scrollRightBtn.addEventListener("click", () => {
+  projectsTrack.scrollBy({ left: 340, behavior: "smooth" });
 });
 
 /* ---------------- Scroll reveal ---------------- */

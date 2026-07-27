@@ -274,16 +274,46 @@ a { color: inherit; }
   margin: 0;
 }
 
-/* ---------------- Projects ---------------- */
+/* ---------------- Projects (horizontal scroll track) ---------------- */
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 22px;
+.projects-scroll-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 10px;
 }
 
+.projects-track {
+  display: flex;
+  gap: 26px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 30px 6vw 40px;
+  margin: 0 -6vw;
+  scrollbar-width: none;
+}
+.projects-track::-webkit-scrollbar { display: none; }
+
+.scroll-arrow {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--gold-bright);
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.2s, border-color 0.2s;
+}
+.scroll-arrow:hover { background: rgba(205,169,78,0.12); border-color: rgba(205,169,78,0.5); }
+
 .project-card {
+  flex-shrink: 0;
+  width: min(320px, 78vw);
+  scroll-snap-align: center;
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: 10px;
@@ -291,18 +321,32 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(205,169,78,0.55);
-  box-shadow: 0 20px 40px -24px rgba(205,169,78,0.25);
+  transition: transform 0.25s ease, opacity 0.25s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transform-origin: center;
 }
 
 .project-card.featured {
   border-color: rgba(205,169,78,0.4);
   background: linear-gradient(160deg, rgba(205,169,78,0.07), var(--card));
+}
+
+.project-card.flagship {
+  width: min(360px, 84vw);
+  border-color: rgba(205,169,78,0.7);
+  background: linear-gradient(160deg, rgba(205,169,78,0.14), var(--card));
+  box-shadow: 0 24px 50px -20px rgba(205,169,78,0.35);
+}
+
+.flagship-badge {
+  align-self: flex-start;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--gold-bright);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
 }
 
 .project-name {
@@ -425,6 +469,12 @@ a { color: inherit; }
   color: var(--cream-dim);
   position: relative;
   z-index: 1;
+}
+
+.foot-aside {
+  margin-top: 6px;
+  font-size: 10.5px;
+  color: rgba(246,241,231,0.28);
 }
 
 /* ---------------- Scroll reveal ---------------- */

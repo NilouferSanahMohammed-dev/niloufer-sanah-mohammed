@@ -1,6 +1,6 @@
 # niloufer-sanah-mohammed
 
-My personal portfolio. An about-me section, a live grid of everything I've built with links to both the working demo and the source code, what I'm currently up to, and a few life snippets.
+My personal portfolio. An about-me section, a horizontally scrolling strip of everything I've built with live demo links, what I'm currently up to, and a few life snippets.
 
 ![status](https://img.shields.io/badge/status-active-brightgreen) ![license](https://img.shields.io/badge/license-MIT-blue)
 
@@ -11,7 +11,7 @@ I wanted something that felt elegant rather than like a template, deep ink backg
 - **Hero** with my name and a one-line tagline
 - **About** with a photo, a short bio, and a row of tag chips for the things I'm into
 - **Now** section, three cards on what I'm currently doing (studying, building, following this F1 season)
-- **Projects**, a live grid pulling from every real project I've shipped, each with its own live demo link and source code link
+- **Projects**, a horizontally scrolling strip pulling from every real project I've shipped, with a live demo link each. Whichever card is centered pops into focus as you scroll, and jarvis gets a bigger card and a badge since it's the project I'm most actively working on
 - **Life, lately**, a small photo gallery
 - **Contact**, simple links to reach me
 
@@ -28,8 +28,8 @@ Every card on the projects page is generated from `projects.js`. Add a new entry
   description: "a couple of sentences about what it does and how.",
   tags: ["Tech", "Stack", "Tags"],
   live: "https://yourusername.github.io/your-project/",
-  repo: "https://github.com/yourusername/your-project",
   featured: true, // optional, gives it a subtle gold highlight
+  flagship: true, // optional, makes it the bigger badged card, only use this on one project at a time
 }
 ```
 

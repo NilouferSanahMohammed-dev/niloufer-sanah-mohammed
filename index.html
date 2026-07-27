@@ -24,10 +24,10 @@
 </nav>
 
 <header class="hero" id="top">
-  <p class="hero-eyebrow reveal">welcome, I'm</p>
+  <p class="hero-eyebrow reveal">hi, i'm</p>
   <h1 class="hero-name reveal">Niloufer Sanah<br /><em>Mohammed</em></h1>
-  <p class="hero-tagline reveal">computer science + neuroscience &middot; builder of small, delightful things</p>
-  <a href="#about" class="hero-scroll reveal">scroll to explore &darr;</a>
+  <p class="hero-tagline reveal">CS major, neuro minor (barely) &middot; I build little internet things for fun</p>
+  <a href="#about" class="hero-scroll reveal">keep scrolling &darr;</a>
 </header>
 
 <main>
@@ -39,18 +39,18 @@
       </div>
       <div class="about-text reveal">
         <p class="eyebrow">about me</p>
-        <h2>a little about who I am</h2>
+        <h2>a little about me</h2>
         <p>
-          I'm Sanah, a computer science major with a minor in neuroscience
-          (though that's more of a side interest than a focus). I like
-          building things that are small, a little unexpected, and genuinely
-          fun to use, which is most of what you'll find on this site.
+          I'm Sanah. I'm studying computer science with a neuroscience minor,
+          though that part's more of a side interest than anything serious.
+          Most of what's on this site is stuff I built just because I wanted
+          to see if I could.
         </p>
         <p>
-          Outside of code, you'll usually find me watching F1, on a
-          basketball court, deep into a playlist, cooking something,
-          reading, driving with no particular destination, or filming
-          whatever I'm doing that day for a vlog.
+          Outside of code, I'm usually watching F1, playing basketball,
+          listening to music, cooking something, reading, driving around
+          with nowhere in particular to be, or filming whatever I'm doing
+          that day for a vlog.
         </p>
         <div class="passion-tags">
           <span>F1</span>
@@ -68,33 +68,37 @@
 
   <section class="section" id="now">
     <p class="eyebrow reveal center">currently</p>
-    <h2 class="reveal center">what I'm up to right now</h2>
+    <h2 class="reveal center">what I'm doing right now</h2>
     <div class="now-grid">
       <div class="now-card reveal">
         <span class="now-icon">🏎️</span>
-        <p>Following this F1 season closely, race by race.</p>
+        <p>watching this F1 season pretty closely</p>
       </div>
       <div class="now-card reveal">
         <span class="now-icon">💻</span>
-        <p>Building and shipping small web projects, the ones below are all things I designed and built myself.</p>
+        <p>building small web projects, like the ones below</p>
       </div>
       <div class="now-card reveal">
         <span class="now-icon">🎓</span>
-        <p>Studying computer science, with a neuroscience minor on the side.</p>
+        <p>studying computer science, neuroscience minor on the side</p>
       </div>
     </div>
   </section>
 
   <section class="section" id="projects">
     <p class="eyebrow reveal center">my work</p>
-    <h2 class="reveal center">things I've built</h2>
-    <p class="section-sub reveal center">every project below is live, real, and something you can actually click into</p>
-    <div class="projects-grid" id="projectsGrid"></div>
+    <h2 class="reveal center">stuff I've built</h2>
+    <p class="section-sub reveal center">scroll sideways through these, jarvis is the big one right now</p>
+    <div class="projects-scroll-wrap reveal">
+      <button class="scroll-arrow scroll-arrow-left" id="scrollLeft" aria-label="Scroll left">&larr;</button>
+      <div class="projects-track" id="projectsGrid"></div>
+      <button class="scroll-arrow scroll-arrow-right" id="scrollRight" aria-label="Scroll right">&rarr;</button>
+    </div>
   </section>
 
   <section class="section" id="life">
     <p class="eyebrow reveal center">life, lately</p>
-    <h2 class="reveal center">a few snippets</h2>
+    <h2 class="reveal center">a few pics</h2>
     <div class="snippets-grid">
       <div class="snippet reveal"><img src="images/snippet-1.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
       <div class="snippet reveal"><img src="images/snippet-2.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
@@ -105,7 +109,7 @@
   <section class="section contact-section" id="contact">
     <p class="eyebrow reveal center">get in touch</p>
     <h2 class="reveal center">let's talk</h2>
-    <p class="section-sub reveal center">open to conversations about projects, opportunities, or just F1 talk</p>
+    <p class="section-sub reveal center">always happy to chat about projects, opportunities, or F1</p>
     <div class="contact-links reveal">
       <a href="mailto:youremail@example.com">email</a>
       <a href="https://github.com/NilouferSanahMohammed-dev" target="_blank" rel="noopener">github</a>
@@ -118,6 +122,7 @@
 
 <footer class="foot">
   <p>designed and built by Niloufer Sanah Mohammed</p>
+  <p class="foot-aside">I also keep a personal blog. it's around here somewhere, if you go looking.</p>
 </footer>
 
 <script src="projects.js"></script>
