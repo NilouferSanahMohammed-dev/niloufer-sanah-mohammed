@@ -40,7 +40,7 @@ const PROJECTS = [
     name: "nova-deck",
     tagline: "a futuristic command dashboard",
     description:
-      "Clock, real live weather, a countdown timer, quick tasks, and notes, styled like a spaceship console. Doubles as a genuinely useful new-tab page.",
+      "Clock, real live weather, a countdown timer, quick tasks, and notes, styled like a spaceship console. Doubles as a genuinely useful new-tab page, and this is actually what led to jarvis, once the dashboard existed I started wondering what it would feel like if it could talk back.",
     tags: ["Open-Meteo API", "CSS"],
     live: "https://niloufersanahmohammed-dev.github.io/nova-deck/",
   },
