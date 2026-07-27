@@ -235,13 +235,19 @@ a { color: inherit; }
   margin-top: 22px;
 }
 
-.passion-tags span {
+.passion-tags a {
   font-size: 12px;
   letter-spacing: 0.03em;
   color: var(--gold-bright);
   border: 1px solid rgba(205,169,78,0.35);
   padding: 6px 14px;
   border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.passion-tags a:hover {
+  background: rgba(205,169,78,0.12);
+  border-color: rgba(205,169,78,0.6);
 }
 
 /* ---------------- Now grid ---------------- */
