@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Niloufer Sanah Mohammed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<nav class="nav" id="nav">
+  <span class="nav-mark">N.S.M.</span>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#projects">projects</a>
+    <a href="#now">now</a>
+    <a href="#life">life</a>
+    <a href="#contact">contact</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <p class="hero-eyebrow reveal">welcome, I'm</p>
+  <h1 class="hero-name reveal">Niloufer Sanah<br /><em>Mohammed</em></h1>
+  <p class="hero-tagline reveal">computer science + neuroscience &middot; builder of small, delightful things</p>
+  <a href="#about" class="hero-scroll reveal">scroll to explore &darr;</a>
+</header>
+
+<main>
+
+  <section class="section" id="about">
+    <div class="about-grid">
+      <div class="about-photo reveal">
+        <img src="images/about.jpg" alt="Niloufer Sanah Mohammed" onerror="this.parentElement.classList.add('empty')" />
+      </div>
+      <div class="about-text reveal">
+        <p class="eyebrow">about me</p>
+        <h2>a little about who I am</h2>
+        <p>
+          I'm Sanah, a computer science major with a minor in neuroscience
+          (though that's more of a side interest than a focus). I like
+          building things that are small, a little unexpected, and genuinely
+          fun to use, which is most of what you'll find on this site.
+        </p>
+        <p>
+          Outside of code, you'll usually find me watching F1, on a
+          basketball court, deep into a playlist, cooking something,
+          reading, driving with no particular destination, or filming
+          whatever I'm doing that day for a vlog.
+        </p>
+        <div class="passion-tags">
+          <span>F1</span>
+          <span>Basketball</span>
+          <span>Music</span>
+          <span>Coding</span>
+          <span>Vlogging</span>
+          <span>Cooking</span>
+          <span>Reading</span>
+          <span>Driving</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="now">
+    <p class="eyebrow reveal center">currently</p>
+    <h2 class="reveal center">what I'm up to right now</h2>
+    <div class="now-grid">
+      <div class="now-card reveal">
+        <span class="now-icon">🏎️</span>
+        <p>Following this F1 season closely, race by race.</p>
+      </div>
+      <div class="now-card reveal">
+        <span class="now-icon">💻</span>
+        <p>Building and shipping small web projects, the ones below are all things I designed and built myself.</p>
+      </div>
+      <div class="now-card reveal">
+        <span class="now-icon">🎓</span>
+        <p>Studying computer science, with a neuroscience minor on the side.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <p class="eyebrow reveal center">my work</p>
+    <h2 class="reveal center">things I've built</h2>
+    <p class="section-sub reveal center">every project below is live, real, and something you can actually click into</p>
+    <div class="projects-grid" id="projectsGrid"></div>
+  </section>
+
+  <section class="section" id="life">
+    <p class="eyebrow reveal center">life, lately</p>
+    <h2 class="reveal center">a few snippets</h2>
+    <div class="snippets-grid">
+      <div class="snippet reveal"><img src="images/snippet-1.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
+      <div class="snippet reveal"><img src="images/snippet-2.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
+      <div class="snippet reveal"><img src="images/snippet-3.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
+    </div>
+  </section>
+
+  <section class="section contact-section" id="contact">
+    <p class="eyebrow reveal center">get in touch</p>
+    <h2 class="reveal center">let's talk</h2>
+    <p class="section-sub reveal center">open to conversations about projects, opportunities, or just F1 talk</p>
+    <div class="contact-links reveal">
+      <a href="mailto:youremail@example.com">email</a>
+      <a href="https://github.com/NilouferSanahMohammed-dev" target="_blank" rel="noopener">github</a>
+      <a href="#" target="_blank" rel="noopener">instagram</a>
+      <a href="#" target="_blank" rel="noopener">linkedin</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p>designed and built by Niloufer Sanah Mohammed</p>
+</footer>
+
+<script src="projects.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
