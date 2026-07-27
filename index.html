@@ -15,8 +15,9 @@
 <nav class="nav" id="nav">
   <span class="nav-mark">N.S.M.</span>
   <div class="nav-links">
-    <a href="#about">about</a>
     <a href="#projects">projects</a>
+    <a href="#about">about</a>
+    <a href="#skills">skills</a>
     <a href="#now">now</a>
     <a href="#life">life</a>
     <a href="#contact">contact</a>
@@ -27,10 +28,21 @@
   <p class="hero-eyebrow reveal">hi, i'm</p>
   <h1 class="hero-name reveal">Niloufer Sanah<br /><em>Mohammed</em></h1>
   <p class="hero-tagline reveal">CS major, neuro minor &middot; I build little internet things for fun</p>
-  <a href="#about" class="hero-scroll reveal">keep scrolling &darr;</a>
+  <a href="#projects" class="hero-scroll reveal">see what I've built &darr;</a>
 </header>
 
 <main>
+
+  <section class="section" id="projects">
+    <p class="eyebrow reveal center">my work</p>
+    <h2 class="reveal center">stuff I've built</h2>
+    <p class="section-sub reveal center">scroll sideways through these, jarvis is the big one right now</p>
+    <div class="projects-scroll-wrap reveal">
+      <button class="scroll-arrow scroll-arrow-left" id="scrollLeft" aria-label="Scroll left">&larr;</button>
+      <div class="projects-track" id="projectsGrid"></div>
+      <button class="scroll-arrow scroll-arrow-right" id="scrollRight" aria-label="Scroll right">&rarr;</button>
+    </div>
+  </section>
 
   <section class="section" id="about">
     <div class="about-grid">
@@ -41,10 +53,10 @@
         <p class="eyebrow">about me</p>
         <h2>a little about me</h2>
         <p>
-          I'm Sanah. I'm studying computer science with a neuroscience minor,
-          though that part's more of a side interest than anything serious.
-          Most of what's on this site is stuff I built just because I wanted
-          to see if I could.
+          I'm Sanah, a junior at the University of Texas at Dallas, studying
+          computer science with a neuroscience minor, though that part's more
+          of a side interest than anything serious. Most of what's on this
+          site is stuff I built just because I wanted to see if I could.
         </p>
         <p>
           Outside of code, I'm usually watching F1, playing basketball,
@@ -65,6 +77,21 @@
     </div>
   </section>
 
+  <section class="section" id="skills">
+    <p class="eyebrow reveal center">skills</p>
+    <h2 class="reveal center">what I work with</h2>
+    <p class="section-sub reveal center">pulled straight from the projects above, not a wishlist</p>
+    <div class="skills-row reveal">
+      <span>JavaScript</span>
+      <span>HTML &amp; CSS</span>
+      <span>Git &amp; GitHub</span>
+      <span>Computer Vision</span>
+      <span>Web APIs</span>
+      <span>Canvas</span>
+      <span>Web Audio</span>
+    </div>
+  </section>
+
   <section class="section" id="now">
     <p class="eyebrow reveal center">currently</p>
     <h2 class="reveal center">what I'm doing right now</h2>
@@ -75,23 +102,12 @@
       </div>
       <div class="now-card reveal">
         <span class="now-icon">💻</span>
-        <p>building small web projects, like the ones below</p>
+        <p>building small web projects, like the ones above</p>
       </div>
       <div class="now-card reveal">
         <span class="now-icon">🎓</span>
-        <p>studying computer science, neuroscience minor on the side</p>
+        <p>junior year at UT Dallas, computer science with a neuroscience minor</p>
       </div>
-    </div>
-  </section>
-
-  <section class="section" id="projects">
-    <p class="eyebrow reveal center">my work</p>
-    <h2 class="reveal center">stuff I've built</h2>
-    <p class="section-sub reveal center">scroll sideways through these, jarvis is the big one right now</p>
-    <div class="projects-scroll-wrap reveal">
-      <button class="scroll-arrow scroll-arrow-left" id="scrollLeft" aria-label="Scroll left">&larr;</button>
-      <div class="projects-track" id="projectsGrid"></div>
-      <button class="scroll-arrow scroll-arrow-right" id="scrollRight" aria-label="Scroll right">&rarr;</button>
     </div>
   </section>
 
