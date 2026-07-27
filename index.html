@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Niloufer Sanah Mohammed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,8 +15,8 @@
 <nav class="nav" id="nav">
   <span class="nav-mark">N.S.M.</span>
   <div class="nav-links">
-    <a href="#projects">projects</a>
     <a href="#about">about</a>
+    <a href="#projects">projects</a>
     <a href="#now">now</a>
     <a href="#life">life</a>
     <a href="#contact">contact</a>
@@ -27,21 +27,10 @@
   <p class="hero-eyebrow reveal">hi, i'm</p>
   <h1 class="hero-name reveal">Niloufer Sanah<br /><em>Mohammed</em></h1>
   <p class="hero-tagline reveal">CS major, neuro minor &middot; I build little internet things for fun</p>
-  <a href="#projects" class="hero-scroll reveal">see what I've built &darr;</a>
+  <a href="#about" class="hero-scroll reveal">keep scrolling &darr;</a>
 </header>
 
 <main>
-
-  <section class="section" id="projects">
-    <p class="eyebrow reveal center">my work</p>
-    <h2 class="reveal center">stuff I've built</h2>
-    <p class="section-sub reveal center">scroll sideways through these, jarvis is the big one right now</p>
-    <div class="projects-scroll-wrap reveal">
-      <button class="scroll-arrow scroll-arrow-left" id="scrollLeft" aria-label="Scroll left">&larr;</button>
-      <div class="projects-track" id="projectsGrid"></div>
-      <button class="scroll-arrow scroll-arrow-right" id="scrollRight" aria-label="Scroll right">&rarr;</button>
-    </div>
-  </section>
 
   <section class="section" id="about">
     <div class="about-grid">
@@ -76,6 +65,15 @@
     </div>
   </section>
 
+  <section class="section" id="projects">
+    <p class="eyebrow reveal center">my work</p>
+    <h2 class="reveal center">stuff I've built</h2>
+    <p class="section-sub reveal center">jarvis is the big one right now &middot; hover to pause, click to open</p>
+    <div class="marquee-wrap reveal">
+      <div class="marquee-track" id="projectsTrack"></div>
+    </div>
+  </section>
+
   <section class="section" id="now">
     <p class="eyebrow reveal center">currently</p>
     <h2 class="reveal center">what I'm doing right now</h2>
@@ -98,11 +96,8 @@
   <section class="section" id="life">
     <p class="eyebrow reveal center">life, lately</p>
     <h2 class="reveal center">a few pics</h2>
-    <div class="snippets-grid">
-      <div class="snippet reveal"><img src="images/snippet-1.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
-      <div class="snippet reveal"><img src="images/snippet-2.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
-      <div class="snippet reveal"><img src="images/snippet-3.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
-      <div class="snippet reveal"><img src="images/snippet-4.jpg" alt="" onerror="this.parentElement.classList.add('empty')" /></div>
+    <div class="marquee-wrap reveal">
+      <div class="marquee-track marquee-track-photos" id="snippetsTrack"></div>
     </div>
   </section>
 

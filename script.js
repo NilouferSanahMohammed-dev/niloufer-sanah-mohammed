@@ -1,18 +1,17 @@
 /**
- * Renders the project track from projects.js as a horizontal,
- * scroll-snapping strip. Whichever card sits closest to the center of
- * the viewport gets scaled up and brought into full focus, the rest
- * fade back and shrink slightly, so scrolling through feels like
- * flipping through cards rather than reading a static grid.
+ * Builds the two auto-sliding carousels (projects and life photos) by
+ * rendering their content once, then duplicating it in place so the
+ * looping animation in style.css can scroll from 0% to -50% and land
+ * exactly back where it started, no visible seam. Hovering either
+ * strip pauses it (see .marquee-track:hover in style.css) so it's
+ * still possible to read a card or click into a project.
  */
 
 /* ---------------- Project cards ---------------- */
 
-const projectsTrack = document.getElementById("projectsGrid");
-const scrollLeftBtn = document.getElementById("scrollLeft");
-const scrollRightBtn = document.getElementById("scrollRight");
+const projectsTrack = document.getElementById("projectsTrack");
 
-PROJECTS.forEach((project) => {
+function buildProjectCard(project) {
   const card = document.createElement("article");
   card.className = `project-card${project.featured ? " featured" : ""}${project.flagship ? " flagship" : ""}`;
   card.innerHTML = `
@@ -27,54 +26,26 @@ PROJECTS.forEach((project) => {
       <a href="${project.live}" target="_blank" rel="noopener">view live &rarr;</a>
     </div>
   `;
-  projectsTrack.appendChild(card);
-});
-
-/* ---------------- Pop-to-center scroll effect ---------------- */
-
-const cards = Array.from(projectsTrack.children);
-
-function updateCardFocus() {
-  const trackRect = projectsTrack.getBoundingClientRect();
-  const centerX = trackRect.left + trackRect.width / 2;
-
-  cards.forEach((card) => {
-    const cardRect = card.getBoundingClientRect();
-    const cardCenter = cardRect.left + cardRect.width / 2;
-    const distance = Math.abs(centerX - cardCenter);
-    const maxDistance = trackRect.width / 2 + cardRect.width / 2;
-    const proximity = Math.max(0, 1 - distance / maxDistance);
-
-    const scale = 0.88 + proximity * 0.12;
-    const opacity = 0.5 + proximity * 0.5;
-    card.style.transform = `scale(${scale})`;
-    card.style.opacity = opacity;
-    card.style.zIndex = Math.round(proximity * 100);
-  });
+  return card;
 }
 
-let rafPending = false;
-function onScroll() {
-  if (rafPending) return;
-  rafPending = true;
-  requestAnimationFrame(() => {
-    updateCardFocus();
-    rafPending = false;
-  });
+PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
+PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project))); // duplicate for seamless loop
+
+/* ---------------- Life photos ---------------- */
+
+const snippetsTrack = document.getElementById("snippetsTrack");
+const SNIPPET_FILES = ["snippet-1.jpg", "snippet-2.jpg", "snippet-3.jpg", "snippet-4.jpg"];
+
+function buildSnippet(file) {
+  const div = document.createElement("div");
+  div.className = "snippet";
+  div.innerHTML = `<img src="images/${file}" alt="" onerror="this.parentElement.classList.add('empty')" />`;
+  return div;
 }
 
-projectsTrack.addEventListener("scroll", onScroll);
-window.addEventListener("resize", onScroll);
-
-// Give the layout a tick to settle before the first measurement.
-setTimeout(updateCardFocus, 200);
-
-scrollLeftBtn.addEventListener("click", () => {
-  projectsTrack.scrollBy({ left: -340, behavior: "smooth" });
-});
-scrollRightBtn.addEventListener("click", () => {
-  projectsTrack.scrollBy({ left: 340, behavior: "smooth" });
-});
+SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file)));
+SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file))); // duplicate for seamless loop
 
 /* ---------------- Scroll reveal ---------------- */
 

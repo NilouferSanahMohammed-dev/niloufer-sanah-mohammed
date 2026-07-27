@@ -282,46 +282,41 @@ a { color: inherit; }
   margin: 0;
 }
 
-/* ---------------- Projects (horizontal scroll track) ---------------- */
+/* ---------------- Marquee carousels (projects + life photos) ---------------- */
 
-.projects-scroll-wrap {
+.marquee-wrap {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  overflow: hidden;
+  margin: 10px -6vw 0;
+  padding: 30px 0 40px;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
-.projects-track {
+.marquee-track {
   display: flex;
   gap: 26px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 30px 6vw 40px;
-  margin: 0 -6vw;
-  scrollbar-width: none;
+  width: max-content;
+  padding: 0 6vw;
+  animation: marquee-scroll 55s linear infinite;
 }
-.projects-track::-webkit-scrollbar { display: none; }
 
-.scroll-arrow {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  color: var(--gold-bright);
-  font-size: 16px;
-  cursor: pointer;
-  z-index: 5;
-  transition: background 0.2s, border-color 0.2s;
+.marquee-track:hover {
+  animation-play-state: paused;
 }
-.scroll-arrow:hover { background: rgba(205,169,78,0.12); border-color: rgba(205,169,78,0.5); }
+
+.marquee-track-photos {
+  animation-duration: 26s;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 .project-card {
   flex-shrink: 0;
   width: min(320px, 78vw);
-  scroll-snap-align: center;
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: 10px;
@@ -329,8 +324,12 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: transform 0.25s ease, opacity 0.25s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  transform-origin: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  border-color: rgba(205,169,78,0.55);
+  box-shadow: 0 20px 40px -24px rgba(205,169,78,0.25);
 }
 
 .project-card.featured {
@@ -410,14 +409,9 @@ a { color: inherit; }
 
 /* ---------------- Life snippets ---------------- */
 
-.snippets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 18px;
-  margin-top: 10px;
-}
-
 .snippet {
+  flex-shrink: 0;
+  width: min(240px, 60vw);
   aspect-ratio: 1;
   border-radius: 8px;
   overflow: hidden;
@@ -505,4 +499,5 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
+  .marquee-track { animation: none; overflow-x: auto; }
 }
