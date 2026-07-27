@@ -94,6 +94,20 @@ const revealObserver = new IntersectionObserver(
 
 revealEls.forEach((el) => revealObserver.observe(el));
 
+/* ---------------- Hero particles ---------------- */
+
+const heroParticles = document.getElementById("heroParticles");
+const PARTICLE_COUNT = 30;
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  const p = document.createElement("span");
+  p.style.left = `${Math.random() * 100}%`;
+  p.style.bottom = `${-10 - Math.random() * 20}px`;
+  p.style.animationDuration = `${10 + Math.random() * 12}s`;
+  p.style.animationDelay = `${Math.random() * 12}s`;
+  heroParticles.appendChild(p);
+}
+
 /* ---------------- Cursor glow ---------------- */
 
 const cursorGlow = document.getElementById("cursorGlow");
