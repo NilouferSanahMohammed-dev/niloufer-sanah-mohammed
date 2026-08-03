@@ -292,32 +292,24 @@ a { color: inherit; }
 
 .marquee-wrap {
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   margin: 10px -6vw 0;
   padding: 30px 0 40px;
   -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
   mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  cursor: grab;
 }
+.marquee-wrap:active { cursor: grabbing; }
+.marquee-wrap::-webkit-scrollbar { display: none; }
 
 .marquee-track {
   display: flex;
   gap: 26px;
   width: max-content;
   padding: 0 6vw;
-  animation: marquee-scroll 55s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-.marquee-track-photos {
-  animation-duration: 26s;
-}
-
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 .project-card {
@@ -505,6 +497,5 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
-  .marquee-track { animation: none; overflow-x: auto; }
   .hero-name { animation: none; }
 }

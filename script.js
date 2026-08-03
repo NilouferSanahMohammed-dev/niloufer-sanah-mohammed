@@ -1,10 +1,15 @@
 /**
- * Builds the two auto-sliding carousels (projects and life photos) by
- * rendering their content once, then duplicating it in place so the
- * looping animation in style.css can scroll from 0% to -50% and land
- * exactly back where it started, no visible seam. Hovering either
- * strip pauses it (see .marquee-track:hover in style.css) so it's
- * still possible to read a card or click into a project.
+ * Builds the two carousels (projects and life photos) by rendering
+ * their content once, then duplicating it in place so the auto-scroll
+ * below can loop seamlessly, no visible seam when it wraps back to
+ * the start.
+ *
+ * Both strips are real scrollable elements (not a CSS animation), so
+ * a finger swipe, a trackpad, a mouse drag, or a scroll wheel all work
+ * on them directly, on phone or laptop alike. The auto-scroll just
+ * nudges scrollLeft forward on its own, and steps out of the way the
+ * instant a person actually touches or drags the strip themselves,
+ * resuming a couple seconds after they let go.
  */
 
 /* ---------------- Project cards ---------------- */
@@ -46,6 +51,63 @@ function buildSnippet(file) {
 
 SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file)));
 SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file))); // duplicate for seamless loop
+
+/* ---------------- Auto-scroll, pausable by real interaction ---------------- */
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function setupAutoScroll(wrapId, durationSeconds) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+
+  let userControlled = false;
+  let resumeTimeoutId = null;
+
+  const pause = () => {
+    userControlled = true;
+    clearTimeout(resumeTimeoutId);
+  };
+  const scheduleResume = () => {
+    clearTimeout(resumeTimeoutId);
+    resumeTimeoutId = setTimeout(() => { userControlled = false; }, 2200);
+  };
+
+  // Covers mouse drag, touch swipe, trackpad, and scroll wheel alike,
+  // since all of them fire these same events on the element.
+  wrap.addEventListener("pointerdown", pause);
+  wrap.addEventListener("pointerup", scheduleResume);
+  wrap.addEventListener("pointercancel", scheduleResume);
+  wrap.addEventListener("touchstart", pause, { passive: true });
+  wrap.addEventListener("touchend", scheduleResume);
+  wrap.addEventListener("wheel", () => {
+    pause();
+    scheduleResume();
+  }, { passive: true });
+  wrap.addEventListener("mouseenter", pause);
+  wrap.addEventListener("mouseleave", scheduleResume);
+
+  if (prefersReducedMotion) return; // still fully scrollable by hand, just no auto-nudge
+
+  function tick() {
+    const halfWidth = wrap.scrollWidth / 2;
+    if (halfWidth > 0) {
+      if (!userControlled) {
+        const speed = halfWidth / (durationSeconds * 60); // approx px per animation frame at ~60fps
+        wrap.scrollLeft += speed;
+      }
+      if (wrap.scrollLeft >= halfWidth) {
+        wrap.scrollLeft -= halfWidth;
+      } else if (wrap.scrollLeft < 0) {
+        wrap.scrollLeft += halfWidth;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+setupAutoScroll("projectsMarquee", 55);
+setupAutoScroll("lifeMarquee", 26);
 
 /* ---------------- Scroll reveal ---------------- */
 
