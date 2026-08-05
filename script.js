@@ -12,48 +12,10 @@
  * resuming a couple seconds after they let go.
  */
 
-/* ---------------- Project cards ---------------- */
-
-const projectsTrack = document.getElementById("projectsTrack");
-
-function buildProjectCard(project) {
-  const card = document.createElement("article");
-  card.className = `project-card${project.flagship ? " flagship featured" : ""}`;
-  card.innerHTML = `
-    ${project.flagship ? `<span class="flagship-badge">the big one right now</span>` : ""}
-    <h3 class="project-name">${project.name}</h3>
-    <p class="project-tagline">${project.tagline}</p>
-    <p class="project-desc">${project.description}</p>
-    <div class="project-tags">
-      ${project.tags.map((tag) => `<span>${tag}</span>`).join("")}
-    </div>
-    <div class="project-links">
-      <a href="${project.live}" target="_blank" rel="noopener">view live &rarr;</a>
-    </div>
-  `;
-  return card;
-}
-
-PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
-PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project))); // duplicate for seamless loop
-setupAutoScroll("projectsMarquee", 55);
-
-/* ---------------- Life photos ---------------- */
-
-const snippetsTrack = document.getElementById("snippetsTrack");
-const SNIPPET_FILES = ["snippet-1.jpg", "snippet-2.jpg", "snippet-3.jpg", "snippet-4.jpg"];
-
-function buildSnippet(file) {
-  const div = document.createElement("div");
-  div.className = "snippet";
-  div.innerHTML = `<img src="images/${file}" alt="" onerror="this.parentElement.classList.add('empty')" />`;
-  return div;
-}
-
-SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file)));
-SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file))); // duplicate for seamless loop
-
 /* ---------------- Auto-scroll, pausable by real interaction ---------------- */
+/* Defined first since the project and photo strips below call this   */
+/* immediately, calling it before its own dependencies exist would    */
+/* throw and silently stop the whole script from running.             */
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -106,6 +68,47 @@ function setupAutoScroll(wrapId, durationSeconds) {
   }
   requestAnimationFrame(tick);
 }
+
+/* ---------------- Project cards ---------------- */
+
+const projectsTrack = document.getElementById("projectsTrack");
+
+function buildProjectCard(project) {
+  const card = document.createElement("article");
+  card.className = `project-card${project.flagship ? " flagship featured" : ""}`;
+  card.innerHTML = `
+    ${project.flagship ? `<span class="flagship-badge">the big one right now</span>` : ""}
+    <h3 class="project-name">${project.name}</h3>
+    <p class="project-tagline">${project.tagline}</p>
+    <p class="project-desc">${project.description}</p>
+    <div class="project-tags">
+      ${project.tags.map((tag) => `<span>${tag}</span>`).join("")}
+    </div>
+    <div class="project-links">
+      <a href="${project.live}" target="_blank" rel="noopener">view live &rarr;</a>
+    </div>
+  `;
+  return card;
+}
+
+PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
+PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project))); // duplicate for seamless loop
+setupAutoScroll("projectsMarquee", 55);
+
+/* ---------------- Life photos ---------------- */
+
+const snippetsTrack = document.getElementById("snippetsTrack");
+const SNIPPET_FILES = ["snippet-1.jpg", "snippet-2.jpg", "snippet-3.jpg", "snippet-4.jpg"];
+
+function buildSnippet(file) {
+  const div = document.createElement("div");
+  div.className = "snippet";
+  div.innerHTML = `<img src="images/${file}" alt="" onerror="this.parentElement.classList.add('empty')" />`;
+  return div;
+}
+
+SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file)));
+SNIPPET_FILES.forEach((file) => snippetsTrack.appendChild(buildSnippet(file))); // duplicate for seamless loop
 
 setupAutoScroll("lifeMarquee", 26);
 
