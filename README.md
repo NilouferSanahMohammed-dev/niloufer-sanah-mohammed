@@ -21,7 +21,7 @@ Every section fades in gently as you scroll to it, and there's a soft gold glow 
 
 - On every page load, it asks GitHub's public API for the full list of my public repos, no login, no key, that's just public information anyone can request
 - It skips a couple of repos on purpose (this portfolio itself, and my personal blog) using a small list in `config.js`
-- For each remaining repo, it fetches that repo's actual `README.md` and pulls out the first real paragraph after the title as the card's tagline, so the card genuinely reflects whatever the README currently says, not a copy I have to remember to update by hand
+- For each remaining repo, it fetches that repo's actual `README.md` and pulls out both a short tagline and a fuller description from the real paragraphs after the title, so the card genuinely reflects whatever the README currently says, not a copy I have to remember to update by hand. Tags come from a small hand-kept list in `config.js`, since GitHub doesn't hand back rich tags automatically the way it does descriptions
 - Whichever repo name matches `FLAGSHIP_REPO` in `config.js` gets sorted to the front with a bigger card and a badge, everything else sorts by whichever repo I pushed to most recently
 - The result gets cached in `localStorage` for an hour, so refreshing the page a bunch doesn't hammer GitHub's free rate limit, and if a fetch ever fails outright, it falls back to whatever was cached last rather than showing an empty section
 - Both the project strip and the photo strip have their content duplicated once, back to back, so a looping auto-scroll can wrap around invisibly instead of snapping back to the start
@@ -30,11 +30,14 @@ Every section fades in gently as you scroll to it, and there's a soft gold glow 
 
 ## Adding a new project
 
-There's nothing to add here. Push a new public repo to GitHub with a README that follows the same shape as my others (a title, then a short paragraph, then the badges line), and it shows up in the projects strip on its own the next time the cache refreshes. The only thing to touch by hand is `config.js`, and only if you want to hide the new repo from the list or make it the flagship card:
+There's nothing to add here. Push a new public repo to GitHub with a README that follows the same shape as my others (a title, then a short paragraph, then the badges line), and it shows up in the projects strip on its own the next time the cache refreshes. The only things to touch by hand are in `config.js`: hiding a repo, marking one as the flagship, or giving it real tags instead of just whatever language GitHub auto-detected:
 
 ```js
 const HIDDEN_REPOS = ["niloufer-sanah-mohammed", "sanah-blog", "your-new-repo-if-you-want-it-hidden"];
 const FLAGSHIP_REPO = "your-new-repo-if-it-should-be-the-big-one";
+const PROJECT_TAGS = {
+  "your-new-repo": ["Tech", "Stack", "Tags"],
+};
 ```
 
 Editing a repo's README updates its card here too, again with nothing to touch on this side, just wait out the hour-long cache or clear `localStorage` to see it immediately.

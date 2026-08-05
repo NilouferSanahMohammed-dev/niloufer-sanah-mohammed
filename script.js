@@ -24,8 +24,9 @@ function buildProjectCard(project) {
     ${project.flagship ? `<span class="flagship-badge">the big one right now</span>` : ""}
     <h3 class="project-name">${project.name}</h3>
     <p class="project-tagline">${project.tagline}</p>
+    <p class="project-desc">${project.description}</p>
     <div class="project-tags">
-      ${project.language ? `<span>${project.language}</span>` : ""}
+      ${project.tags.map((tag) => `<span>${tag}</span>`).join("")}
     </div>
     <div class="project-links">
       <a href="${project.live}" target="_blank" rel="noopener">view live &rarr;</a>
@@ -35,23 +36,34 @@ function buildProjectCard(project) {
 }
 
 /**
- * Pulls a one-line tagline out of a repo's actual README: skip the H1
- * title, skip badge lines (they start with "!"), and use the first
- * real paragraph after that. Every README here follows that shape on
- * purpose, so this holds up without needing a special field anywhere.
+ * Pulls both a short tagline and a fuller description out of a repo's
+ * actual README: skip the H1 title and the badges line, the first
+ * real paragraph after that becomes the tagline, and the next real
+ * paragraph or two (up to a length budget) becomes the fuller
+ * description. Every README here follows that shape on purpose, so
+ * this holds up without needing separate fields maintained anywhere.
  */
-function extractTagline(readmeText) {
-  const paragraphs = readmeText.split(/\n\s*\n/).map((p) => p.trim());
-  for (const p of paragraphs) {
-    if (!p || p.startsWith("#") || p.startsWith("!") || p.startsWith("![")) continue;
-    const oneLine = p.replace(/\s+/g, " ").replace(/[`*_]/g, "");
-    return oneLine.length > 220 ? `${oneLine.slice(0, 217)}...` : oneLine;
+function extractReadmeInfo(readmeText) {
+  const paragraphs = readmeText
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p && !p.startsWith("#") && !p.startsWith("!") && !p.startsWith("!["))
+    .map((p) => p.replace(/\s+/g, " ").replace(/[`*_]/g, ""));
+
+  const tagline = paragraphs[0] || "see the repo for details.";
+
+  let description = "";
+  for (const p of paragraphs.slice(1)) {
+    if (description.length + p.length > 320) break;
+    description += (description ? " " : "") + p;
+    if (description.length > 180) break;
   }
-  return "see the repo for details.";
+
+  return { tagline, description: description || tagline };
 }
 
 async function fetchProjects() {
-  const CACHE_KEY = "portfolio-projects-cache-v1";
+  const CACHE_KEY = "portfolio-projects-cache-v2";
   const CACHE_MAX_AGE = 60 * 60 * 1000; // 1 hour
 
   try {
@@ -69,22 +81,23 @@ async function fetchProjects() {
 
   const visible = repos.filter((r) => !HIDDEN_REPOS.includes(r.name) && !r.fork);
 
-  const withTaglines = await Promise.all(
+  const withInfo = await Promise.all(
     visible.map(async (r) => {
-      let tagline = r.description || "see the repo for details.";
+      let readmeInfo = { tagline: r.description || "see the repo for details.", description: r.description || "" };
       try {
         const readmeRes = await fetch(
           `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${r.name}/main/README.md`
         );
-        if (readmeRes.ok) tagline = extractTagline(await readmeRes.text());
+        if (readmeRes.ok) readmeInfo = extractReadmeInfo(await readmeRes.text());
       } catch {
         // Keep the fallback tagline above, no need to fail the whole card over this.
       }
 
       return {
         name: r.name,
-        tagline,
-        language: r.language,
+        tagline: readmeInfo.tagline,
+        description: readmeInfo.description,
+        tags: PROJECT_TAGS[r.name] || (r.language ? [r.language] : []),
         live: `https://${GITHUB_USERNAME}.github.io/${r.name}/`,
         flagship: r.name === FLAGSHIP_REPO,
         pushedAt: r.pushed_at,
@@ -92,18 +105,18 @@ async function fetchProjects() {
     })
   );
 
-  withTaglines.sort((a, b) => {
+  withInfo.sort((a, b) => {
     if (a.flagship !== b.flagship) return a.flagship ? -1 : 1;
     return new Date(b.pushedAt) - new Date(a.pushedAt);
   });
 
   try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), projects: withTaglines }));
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), projects: withInfo }));
   } catch {
     // Storage full or unavailable, not worth failing over.
   }
 
-  return withTaglines;
+  return withInfo;
 }
 
 fetchProjects()
@@ -116,7 +129,7 @@ fetchProjects()
   .catch((err) => {
     console.error("Couldn't load projects from GitHub", err);
     try {
-      const stale = JSON.parse(localStorage.getItem("portfolio-projects-cache-v1"));
+      const stale = JSON.parse(localStorage.getItem("portfolio-projects-cache-v2"));
       if (stale?.projects?.length) {
         projectsLoading.classList.add("hidden");
         stale.projects.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
