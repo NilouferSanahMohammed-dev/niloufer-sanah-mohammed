@@ -12,20 +12,20 @@
  * resuming a couple seconds after they let go.
  */
 
-/* ---------------- Project cards ---------------- */
+/* ---------------- Project cards, fetched live from GitHub ---------------- */
 
 const projectsTrack = document.getElementById("projectsTrack");
+const projectsLoading = document.getElementById("projectsLoading");
 
 function buildProjectCard(project) {
   const card = document.createElement("article");
-  card.className = `project-card${project.featured ? " featured" : ""}${project.flagship ? " flagship" : ""}`;
+  card.className = `project-card${project.flagship ? " flagship featured" : ""}`;
   card.innerHTML = `
     ${project.flagship ? `<span class="flagship-badge">the big one right now</span>` : ""}
     <h3 class="project-name">${project.name}</h3>
     <p class="project-tagline">${project.tagline}</p>
-    <p class="project-desc">${project.description}</p>
     <div class="project-tags">
-      ${project.tags.map((tag) => `<span>${tag}</span>`).join("")}
+      ${project.language ? `<span>${project.language}</span>` : ""}
     </div>
     <div class="project-links">
       <a href="${project.live}" target="_blank" rel="noopener">view live &rarr;</a>
@@ -34,8 +34,101 @@ function buildProjectCard(project) {
   return card;
 }
 
-PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
-PROJECTS.forEach((project) => projectsTrack.appendChild(buildProjectCard(project))); // duplicate for seamless loop
+/**
+ * Pulls a one-line tagline out of a repo's actual README: skip the H1
+ * title, skip badge lines (they start with "!"), and use the first
+ * real paragraph after that. Every README here follows that shape on
+ * purpose, so this holds up without needing a special field anywhere.
+ */
+function extractTagline(readmeText) {
+  const paragraphs = readmeText.split(/\n\s*\n/).map((p) => p.trim());
+  for (const p of paragraphs) {
+    if (!p || p.startsWith("#") || p.startsWith("!") || p.startsWith("![")) continue;
+    const oneLine = p.replace(/\s+/g, " ").replace(/[`*_]/g, "");
+    return oneLine.length > 220 ? `${oneLine.slice(0, 217)}...` : oneLine;
+  }
+  return "see the repo for details.";
+}
+
+async function fetchProjects() {
+  const CACHE_KEY = "portfolio-projects-cache-v1";
+  const CACHE_MAX_AGE = 60 * 60 * 1000; // 1 hour
+
+  try {
+    const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (cached && Date.now() - cached.savedAt < CACHE_MAX_AGE) {
+      return cached.projects;
+    }
+  } catch {
+    // No usable cache, fall through to a live fetch.
+  }
+
+  const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=pushed`);
+  if (!reposRes.ok) throw new Error(`repo list fetch failed: ${reposRes.status}`);
+  const repos = await reposRes.json();
+
+  const visible = repos.filter((r) => !HIDDEN_REPOS.includes(r.name) && !r.fork);
+
+  const withTaglines = await Promise.all(
+    visible.map(async (r) => {
+      let tagline = r.description || "see the repo for details.";
+      try {
+        const readmeRes = await fetch(
+          `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${r.name}/main/README.md`
+        );
+        if (readmeRes.ok) tagline = extractTagline(await readmeRes.text());
+      } catch {
+        // Keep the fallback tagline above, no need to fail the whole card over this.
+      }
+
+      return {
+        name: r.name,
+        tagline,
+        language: r.language,
+        live: `https://${GITHUB_USERNAME}.github.io/${r.name}/`,
+        flagship: r.name === FLAGSHIP_REPO,
+        pushedAt: r.pushed_at,
+      };
+    })
+  );
+
+  withTaglines.sort((a, b) => {
+    if (a.flagship !== b.flagship) return a.flagship ? -1 : 1;
+    return new Date(b.pushedAt) - new Date(a.pushedAt);
+  });
+
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), projects: withTaglines }));
+  } catch {
+    // Storage full or unavailable, not worth failing over.
+  }
+
+  return withTaglines;
+}
+
+fetchProjects()
+  .then((projects) => {
+    projectsLoading.classList.add("hidden");
+    projects.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
+    projects.forEach((project) => projectsTrack.appendChild(buildProjectCard(project))); // duplicate for seamless loop
+    setupAutoScroll("projectsMarquee", 55);
+  })
+  .catch((err) => {
+    console.error("Couldn't load projects from GitHub", err);
+    try {
+      const stale = JSON.parse(localStorage.getItem("portfolio-projects-cache-v1"));
+      if (stale?.projects?.length) {
+        projectsLoading.classList.add("hidden");
+        stale.projects.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
+        stale.projects.forEach((project) => projectsTrack.appendChild(buildProjectCard(project)));
+        setupAutoScroll("projectsMarquee", 55);
+        return;
+      }
+    } catch {
+      // No usable stale cache either, fall through to the error message.
+    }
+    projectsLoading.textContent = "couldn't reach GitHub just now, refresh to try again.";
+  });
 
 /* ---------------- Life photos ---------------- */
 
@@ -106,7 +199,6 @@ function setupAutoScroll(wrapId, durationSeconds) {
   requestAnimationFrame(tick);
 }
 
-setupAutoScroll("projectsMarquee", 55);
 setupAutoScroll("lifeMarquee", 26);
 
 /* ---------------- Scroll reveal ---------------- */

@@ -19,26 +19,25 @@ Every section fades in gently as you scroll to it, and there's a soft gold glow 
 
 ## How it works, in plain English
 
-- Project cards get built from the list in `projects.js`, one card per entry, in order
+- On every page load, it asks GitHub's public API for the full list of my public repos, no login, no key, that's just public information anyone can request
+- It skips a couple of repos on purpose (this portfolio itself, and my personal blog) using a small list in `config.js`
+- For each remaining repo, it fetches that repo's actual `README.md` and pulls out the first real paragraph after the title as the card's tagline, so the card genuinely reflects whatever the README currently says, not a copy I have to remember to update by hand
+- Whichever repo name matches `FLAGSHIP_REPO` in `config.js` gets sorted to the front with a bigger card and a badge, everything else sorts by whichever repo I pushed to most recently
+- The result gets cached in `localStorage` for an hour, so refreshing the page a bunch doesn't hammer GitHub's free rate limit, and if a fetch ever fails outright, it falls back to whatever was cached last rather than showing an empty section
 - Both the project strip and the photo strip have their content duplicated once, back to back, so a looping auto-scroll can wrap around invisibly instead of snapping back to the start
 - A small loop nudges each strip forward on its own, unless someone's actually touching or dragging it, in which case it backs off and lets them scroll it by hand, then picks back up a couple seconds after they let go
 - Sections stay invisible until they scroll into view, then fade and slide in once, using `IntersectionObserver` so nothing off-screen is doing any work
 
 ## Adding a new project
 
-Every card on the projects strip is generated from `projects.js`. Add a new entry and it shows up automatically, no HTML editing needed:
+There's nothing to add here. Push a new public repo to GitHub with a README that follows the same shape as my others (a title, then a short paragraph, then the badges line), and it shows up in the projects strip on its own the next time the cache refreshes. The only thing to touch by hand is `config.js`, and only if you want to hide the new repo from the list or make it the flagship card:
 
 ```js
-{
-  name: "your-project",
-  tagline: "a short one-line hook",
-  description: "a couple of sentences about what it does and how.",
-  tags: ["Tech", "Stack", "Tags"],
-  live: "https://yourusername.github.io/your-project/",
-  featured: true, // optional, gives it a subtle gold highlight
-  flagship: true, // optional, makes it the bigger badged card, only use this on one project at a time
-}
+const HIDDEN_REPOS = ["niloufer-sanah-mohammed", "sanah-blog", "your-new-repo-if-you-want-it-hidden"];
+const FLAGSHIP_REPO = "your-new-repo-if-it-should-be-the-big-one";
 ```
+
+Editing a repo's README updates its card here too, again with nothing to touch on this side, just wait out the hour-long cache or clear `localStorage` to see it immediately.
 
 ## Updating your photos
 
