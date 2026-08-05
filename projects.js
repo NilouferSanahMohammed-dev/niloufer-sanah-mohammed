@@ -37,12 +37,12 @@ const PROJECTS = [
     featured: true,
   },
   {
-    name: "nova-deck",
-    tagline: "a futuristic command dashboard",
+    name: "daily-deck",
+    tagline: "a cozy Notion-style task manager that actually talks to jarvis",
     description:
-      "Clock, real live weather, a countdown timer, quick tasks, and notes, styled like a spaceship console. Doubles as a genuinely useful new-tab page, and this is actually what led to jarvis, once the dashboard existed I started wondering what it would feel like if it could talk back.",
-    tags: ["Open-Meteo API", "CSS"],
-    live: "https://niloufersanahmohammed-dev.github.io/nova-deck/",
+      "Custom lists, due dates, notes per task, and calendar import via .ics files. The interesting part: it genuinely connects to jarvis, no API, just a shared browser storage key, since all my projects live on the same domain. Say hi to jarvis and it'll tell you what's on your list for the day. That trick opened up a bigger idea I'm chasing now, wiring more of these projects into jarvis the same way, so it slowly becomes a real hub instead of just one assistant on its own.",
+    tags: ["LocalStorage", "Notion-style UI", "Calendar Import"],
+    live: "https://niloufersanahmohammed-dev.github.io/daily-deck/",
   },
   {
     name: "vinyl-now-playing",
